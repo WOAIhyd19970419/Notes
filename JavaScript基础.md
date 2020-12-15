@@ -500,3 +500,283 @@ JS为了增强原始类型的功能 为boolean string number分别创建了一�
 
 ### 尾递归
 古国一个函数最后一条语句是调用函数 并且调用函数不是表达式的一部分 则该语句成为尾调用 如果尾调用是调用自身函数 则称为尾递归
+
+
+# 标准库（标准API）
+## Object和Function
+### Object
+#### 静态成员
+- keys(某个对象) 得到某个对象的所有属性名数组
+- values(某个对象) 得到某个对象的所有属性值数组
+- entries(某个对象) 得到某个对象的所有属性名和属性值的数组
+
+#### 实例对象
+> 实例成员可以被重写
+**所有对象 都拥有Object的所有实例成员**
+- toString方法：得到某个对象的字符串格式
+  默认情况下 该方法返回"[object Object]"
+- valueOf方法：得到某个对象的值
+  默认情况下 返回该对象本身
+> 在JS中当自动的进行类型转换时 如果要对一个对象进行转换 实际上是先调用对象的valueOf方法 然后调用返回结果的toString方法 将得到的结果再进行进一步转换
+
+### Function
+## Array构造器
+凡是通过Array构造函数创建的对象 都是数组
+### 静态成员
+- from方法：可以将一个伪数组转换为真数组
+- isArray方法：判断一个给定的数据 是否为一个真数组
+- of方法：类似于中括号创建数组 一次赋予数组每一项的值
+
+### 实例成员
+- fill
+- pop
+- push
+- reverse
+- shift
+- sort
+- splice
+- unshift
+
+纯函数、无副作用函数：不会导致当前对象发生改变
+
+- concat
+- includes
+- join
+- slice
+- indexOf
+- lastIndexOf
+- forEach
+- every
+- some
+- filter
+- find
+- findIndex
+- map
+- reduce
+## 原始类型包装器
+- new包装器(值)：返回一个对象
+- 包装器(值)：返回一个原始类型
+  
+### Number
+#### 静态成员
+- isNaN
+- isFinite
+- isInteger
+- parseFloat
+- parseInt
+
+parseInt、parseFloat要求参数为一个字符串 如果不是字符串 则会先转换为字符串
+从字符串开始位置进行查找 找到第一个有效的数字进行转换 如果没有找到 则返回NaN 忽略左右空白字符
+parseInt可以传入第二个参数 表示将给定的字符串识别为多少进制
+
+#### 实例成员
+- toFixed方法：四舍五入
+- toPrecision方法：以指定的精度返回一个数字字符串
+
+### Boolean
+### String
+#### 静态成员
+- fromCharCode：通过unicode编码创建字符串
+
+#### 实例成员
+- length
+
+字符串是一个伪数组
+- charAt
+- charCodeAt
+- concat
+- includes
+- endsWidth
+- startsWidth
+- indexOf
+- lastIndexOf
+- padStart
+- padEnd
+- repeat
+- slice
+- substr
+- substring
+- toLowerCase
+- toUpperCase
+- split
+## Math对象
+提供了一系列与数字相关的成员
+> 常量：永远不会变化的数据 常量一般命名时所有字母大写 如果有多个单词 用下划线分割
+- random
+- PI
+- abs
+- floor
+- ceil
+- max
+- min
+- pow
+- round
+## Date构造器
+### 术语
+1. 时间单位
+   年（year）
+   月（month）
+   日（date）
+   小时（hour）
+   分钟（minute）
+   秒（second）
+   毫秒（millisecond）
+   微秒（microsecond）
+   纳秒（nanosecond）
+2. UTC和GMT
+  GMT：格林威治时间时 太阳时 精确到毫秒
+  UTC：世界协调时 以原子时间为计时标准 精确到纳秒
+  GMT与UTC之前的误差不超过0.9秒
+3. 时间戳
+   一个数字：1970-1-1到某个时间所经过的毫秒数
+
+### 创建时间对象
+- 直接调用函数（不适用new）忽略所有参数 直接返回当前时间的字符串
+- new Date()：创建日期对象
+1. 无参 当前时间
+2. 1个参数 参数为数字 表示传入的是时间戳
+3. 两个参数以上 分别表示 年、月、日、时、分、秒、毫秒
+**月份的数字是从0开始极端的**
+如果缺失参数 日期部分默认为1 时分秒毫秒默认为0
+月、日、时、分、秒、毫秒 均可以传递负数 如果传递负数 会根据指定日期进行计算
+
+### 实例对象
+- getDate 返回日期（这个月几号）
+- getDay 返回星期几
+- getFullYear 
+- getMonth
+- getHours
+- getMinutes
+- getSeconds
+- getMilliseconds
+- getTime 返回时间戳
+
+- setDate
+- setFullYear
+- setMonth
+- setMinutes
+- setSeconds
+- setTime
+
+- toDateString 将日期部分转换为可读字符串
+- toISOString 将对象转换为ISO标准的字符串格式
+- toLocaleDateString 根据当前系统的地区设置 将日期部分转换为可读的字符串
+- toLocaleString 根据当前系统的地区设置 将日期对象转换为可读的字符串
+- toLocaleTimeString 根据当前系统的地区设置 将时间部分转换为可读的字符串
+
+### 日期的运算
+日期对象重写了Object中的valueOf方法 返回的是一个数字 表示时间戳
+因此 日期对象可以进行数学运算
+## 正则表达式
+是一个验证字符串的规则
+
+### 基础
+1. 字面量匹配
+   规则中直接书写字面量字符
+2. 特殊字符
+```
+.
+^
+$
+```
+3. 转义符
+```
+\n
+\r
+\t
+\s
+\S
+\b
+\B
+\d
+\D
+\w
+\W
+\u
+```
+转义符可以将特殊字符转义
+4. 字符集
+```
+[字符范围]
+```
+匹配中文：```[\u4e00-\u9FA5]```
+5. 量词
+前面的规则出现的次数
+```
+*
++
+?
+{n}：匹配n个
+{n,}：匹配>=n个
+{n,m}：匹配n-m个
+```
+
+### JS中的应用
+js中 正则表达式表现为一个对象 该对象是通过构造函数RegExp构造
+
+#### 创建正则对象
+1. 字面量模式
+2. 构造函数模式
+   
+#### 正则实例成员
+- global
+- ignoreCase
+- multiline
+- source
+- test方法：验证某个字符串是否满足规则
+- exec方法：execute 执行匹配 得到匹配结果
+  
+> 正则表达式 默认情况下 适用贪婪模式
+> 在量词后 加上? 表示进入非贪婪模式
+
+#### 字符串对象中的正则方法
+- split
+- replace
+- search
+- match
+
+### 进阶
+#### 捕获组
+用小括号包裹的部分叫做捕获组 捕获组会出现在匹配结果中
+捕获组可以命名 叫做具名捕获组
+非捕获组
+
+#### 反向引用
+在正则表达式中 使用某个捕获组 ```\捕获组编号```
+
+#### 正向断言（预查）
+检查某个字符后面的字符是否满足某个规则 该规则不成为匹配结果 并且不称为捕获组
+
+#### 负向断言（预查）
+检查某个字符后面的字符是否不满足某个规划 该规则不成为匹配结果 并且不称为捕获组
+## 错误处理
+JS中的错误分为：
+1. 语法错误：会导致整个脚本块无法执行
+2. 运行错误
+   1）运行报错：会导致当前脚本块后续代码无法执行
+   2）运行结果不符合预期
+
+### 调试错误
+1. 控制台打印
+2. 断点调试
+
+### 抛出错误
+错误在js中本质上是一个对象 抛出错误的语法为：
+```js
+throw 错误对象;
+```
+错误对象的构造函数为Error
+
+### 捕获错误
+```js
+try{
+  // 代码块1
+} catch {
+  // 代码块2
+} finally {
+  // 代码块3
+}
+```
+当运行代码块1的时候 如果发生错误 立即停止代码块1的执行 转而执行代码块2 错误对象为抛出的错误对象 无论代码块1和代码块2是否报出错误 最终都将执行代码块3
+
+# dom核心
